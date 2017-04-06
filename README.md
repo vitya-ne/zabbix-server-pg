@@ -11,5 +11,5 @@ Image are based on Alpine image.
 
 Start a Zabbix server container as follows:
 ```console
-$ make run ..
+$ make run DB_HOST="X.X.X.X" DB_PORT="YYYY" PG_PASS="ZZZZZZZZ"
 ```
