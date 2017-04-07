@@ -8,16 +8,13 @@ ENV TERM=xterm
 ENV MIBDIRS=/usr/share/snmp/mibs:/var/lib/zabbix/mibs MIBS=+ALL
 
 RUN addgroup zabbix && \
-    adduser -S \
-            -D -G zabbix \
-            -h /var/lib/zabbix/ \
-        zabbix && \
+    adduser -S -D -G zabbix -h /var/lib/zabbix/ zabbix && \
     mkdir -p /etc/zabbix/ && \
-    mkdir -p /var/lib/zabbix && \
+# !!    mkdir -p /var/lib/zabbix && \
     mkdir -p /var/lib/zabbix/enc && \
     mkdir -p /var/lib/zabbix/modules && \
     mkdir -p /var/lib/zabbix/ssh_keys && \
-    mkdir -p /var/lib/zabbix/ssl && \
+# !!    mkdir -p /var/lib/zabbix/ssl && \
     mkdir -p /var/lib/zabbix/ssl/certs && \
     mkdir -p /var/lib/zabbix/ssl/keys && \
     mkdir -p /var/lib/zabbix/ssl/ssl_ca && \
@@ -75,7 +72,7 @@ RUN apk add ${APK_FLAGS_DEV} --virtual build-dependencies \
             --libdir=/usr/lib/zabbix \
             --datadir=/usr/lib \
             --enable-server \
-# !!        --enable-ipv6 \
+            --enable-ipv6 \
 # Does not support stable iksemel library
 #           --with-jabber \
             --with-ldap \
@@ -98,7 +95,9 @@ RUN apk add ${APK_FLAGS_DEV} --virtual build-dependencies \
     cd /tmp/ && \
     rm -rf /tmp/zabbix-${ZBX_VERSION}/ && \
     apk del ${APK_FLAGS_COMMON} --purge \
-            build-dependencies && \
+            build-dependencies \
+            automake \
+            subversion && \
     rm -rf /var/cache/apk/*
 
 EXPOSE 10051/TCP 162/UDP

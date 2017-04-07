@@ -32,7 +32,12 @@ rm:
 
 rmi:
 	docker rmi $(DOCKER_IMAGE)
-	docker volume rm $(docker volume ls -qf dangling=true)
-	docker rmi $(docker images -f "dangling=true" -q)
+	@echo dangling volumes:
+	docker volume ls -qf dangling=true
+#	docker volume rm $(docker volume ls -qf dangling=true)
+	@echo dangling images:
+	docker images -f "dangling=true" -q
+#	docker rmi $(docker images -f "dangling=true" -q)
+	@echo All containers and images:
 	docker ps -a
 	docker images -a
