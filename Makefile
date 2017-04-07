@@ -1,5 +1,5 @@
 
-DOCKER_IMAGE=zabbix-server-pg
+DOCKER_IMAGE=megbeguk/zabbix-server-pg
 DOCKER_CONTAINER=zabbix-server
 
 # set param from cmd:

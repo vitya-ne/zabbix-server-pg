@@ -112,5 +112,4 @@ COPY files /
 
 ENTRYPOINT ["/bin/bash"]
 
-# !! CMD ["/run_zabbix_component.sh", "server", "postgresql"]
-CMD /run_zabbix_component.sh
+CMD ["/run_zabbix_component.sh"]
