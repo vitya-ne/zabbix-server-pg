@@ -1,10 +1,10 @@
-FROM zabbix/zabbix-web-nginx-pgsql:alpine-3.2.4
+FROM zabbix/zabbix-server-pgsql:alpine-latest
 
-ARG VER=3.2.4
+# ARG VER=3.2.4
 
-ENV TERM=xterm
-ENV ZBX_VERSION=${VER} ZBX_SOURCES=svn://svn.zabbix.com/tags/${VER}/ DB_TYPE=postgresql
-ENV MIBDIRS=/usr/share/snmp/mibs:/var/lib/zabbix/mibs MIBS=+ALL
+# ENV TERM=xterm
+# ENV ZBX_VERSION=${VER} ZBX_SOURCES=svn://svn.zabbix.com/tags/${VER}/ DB_TYPE=postgresql
+# ENV MIBDIRS=/usr/share/snmp/mibs:/var/lib/zabbix/mibs MIBS=+ALL
 
 EXPOSE 10051/TCP 162/UDP
 
