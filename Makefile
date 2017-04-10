@@ -24,7 +24,7 @@ run:
 	docker run -d -t -e DB_SERVER_HOST=$(DB_HOST) -e DB_SERVER_PORT=$(DB_PORT) -e POSTGRES_USER="zabbix" -e POSTGRES_PASSWORD=$(PG_PASS) -e POSTGRES_DB="zabbix" -e ZBX_ENABLE_SNMP_TRAPS="true" -p 10051:10051 --volumes-from zabbix-snmptraps --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
 
 log:
-	docker logs $(DOCKER_CONTAINER) | tail -n 100
+	docker logs $(DOCKER_CONTAINER)
 
 rm:
 	docker stop $(DOCKER_CONTAINER)
@@ -38,6 +38,7 @@ rmi:
 	@echo dangling images:
 	docker images -f "dangling=true" -q
 #	docker rmi $(docker images -f "dangling=true" -q)
+	@echo
 	@echo All containers and images:
 	docker ps -a
 	docker images -a
