@@ -21,7 +21,7 @@ shell:
 	docker exec -i -t $(DOCKER_CONTAINER) bash
 
 run:
-	docker run -d -t -e DB_SERVER_HOST=$(DB_HOST) -e DB_SERVER_PORT=$(DB_PORT) -e POSTGRES_USER="zabbix" -e POSTGRES_PASSWORD=$(PG_PASS) -e POSTGRES_DB="zabbix" -e ZBX_ENABLE_SNMP_TRAPS="true" -p 10051:10051 --volumes-from zabbix-snmptraps --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
+	docker run -d -t -e DB_SERVER_HOST=$(DB_HOST) -e DB_SERVER_PORT=$(DB_PORT) -e POSTGRES_USER="zabbix" -e POSTGRES_PASSWORD=$(PG_PASS) -e POSTGRES_DB="zabbix" -e ZBX_ENABLE_SNMP_TRAPS="true" -p 10051:10051 --volumes-from zabbix-snmptraps --link zabbix-agent:zabbix-agent --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
 
 log:
 	docker logs $(DOCKER_CONTAINER)
@@ -32,22 +32,15 @@ rm:
 
 rmi:
 	docker rmi $(DOCKER_IMAGE)
-	VOL_DANG=$(docker volume ls -qf dangling=true)
-	ifeq ($(VOL_DANG),)
-		@echo dangling volumes: none
-	else
-		@echo remove dangling volumes:
-		docker volume rm $(VOL_DANG)
-	endif
-
-	IMG_DANG=$(docker images -f "dangling=true" -q)
-	ifeq ($(IMG_DANG),)
-		@echo dangling images: none
-	else
-		@echo remove dangling images:
-		docker rmi $(IMG_DANG)
-	endif
-	@echo
-	@echo All containers and images:
-	docker ps -a
-	docker images -a
+ifeq ("$(VOL_DANG)", "")
+	@echo "dangling volumes: none"
+else
+	@echo "remove dangling volumes:"
+	docker volume rm $(VOL_DANG)
+endif
+ifeq ("$(IMG_DANG)","")
+	@echo "dangling images: none"
+else
+	@echo "remove dangling images:"
+	docker rmi $(IMG_DANG)
+endif
