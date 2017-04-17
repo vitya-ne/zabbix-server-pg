@@ -1,6 +1,8 @@
 
 DOCKER_IMAGE=megbeguk/zabbix-server-pg
 DOCKER_CONTAINER=zabbix-server
+VOL_DANG=$(docker volume ls -qf dangling=true)
+IMG_DANG=$(docker images -f "dangling=true" -q)
 
 # set param from cmd:
 # make build DB_HOST="X.X.X.X" DB_PORT="YYYY" PG_PASS="ZZZZZZZZ"
@@ -14,14 +16,7 @@ build:
 	docker build -t $(DOCKER_IMAGE) src/
 	docker images -a | grep $(DOCKER_IMAGE)
 
-bash:
-	docker run --rm --name $(DOCKER_CONTAINER)_bash -it $(DOCKER_IMAGE) bash
 
-shell:
-	docker exec -i -t $(DOCKER_CONTAINER) bash
-
-run:
-	docker run -d -t -e DB_SERVER_HOST=$(DB_HOST) -e DB_SERVER_PORT=$(DB_PORT) -e POSTGRES_USER="zabbix" -e POSTGRES_PASSWORD=$(PG_PASS) -e POSTGRES_DB="zabbix" -e ZBX_ENABLE_SNMP_TRAPS="true" -p 10051:10051 --volumes-from zabbix-snmptraps --link zabbix-agent:zabbix-agent --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
 
 log:
 	docker logs $(DOCKER_CONTAINER)
